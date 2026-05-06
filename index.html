@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="he">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Museum Card Scanner (Local)</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__title">Museum Card Scanner</div>
+      <div class="header__subtitle">OCR מקומי בדפדפן • עברית + English • תבנית אחת</div>
+    </header>
+
+    <main class="container">
+      <section class="panel">
+        <h2>1) העלאת תמונה</h2>
+        <div class="row">
+          <input id="fileInput" type="file" accept="image/*" />
+          <button id="runBtn" class="primary" disabled>Run OCR</button>
+          <button id="resetBtn">Reset</button>
+        </div>
+        <p class="hint">
+          עובד מקומית בדפדפן. כדי לדייק חילוץ שדות, נגדיר בהמשך “אזורי שדות” לפי התבנית שלך.
+        </p>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h2>2) תצוגה מקדימה</h2>
+          <div class="previewWrap">
+            <div class="canvasStack">
+              <canvas id="previewCanvas"></canvas>
+              <canvas id="overlayCanvas"></canvas>
+            </div>
+          </div>
+          <div class="row">
+            <label class="label">
+              Language
+              <select id="langSelect">
+                <option value="heb+eng" selected>heb + eng</option>
+                <option value="heb">heb</option>
+                <option value="eng">eng</option>
+              </select>
+            </label>
+            <label class="label">
+              Scale
+              <select id="scaleSelect">
+                <option value="1">1x</option>
+                <option value="1.5" selected>1.5x</option>
+                <option value="2">2x</option>
+              </select>
+            </label>
+            <label class="label">
+              Mode
+              <select id="modeSelect">
+                <option value="template" selected>Template (ROI)</option>
+                <option value="whole">Whole image</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>3) שדות שחולצו (JSON)</h2>
+          <div class="row">
+            <button id="downloadJsonBtn" disabled>Download JSON</button>
+            <button id="downloadCsvBtn" disabled>Download CSV</button>
+          </div>
+          <textarea id="output" spellcheck="false" placeholder="Output will appear here..."></textarea>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Template (ROI)</h2>
+        <div class="row">
+          <button id="addRegionBtn" class="primary" disabled>Add field</button>
+          <button id="deleteRegionBtn" disabled>Delete selected</button>
+          <button id="clearTemplateBtn">Clear template</button>
+          <button id="exportTemplateBtn" disabled>Export template</button>
+          <input id="importTemplateInput" type="file" accept="application/json" />
+        </div>
+        <div class="row">
+          <label class="label">
+            Selected field
+            <select id="fieldSelect" disabled></select>
+          </label>
+          <label class="label">
+            Preprocess
+            <select id="preprocessSelect">
+              <option value="auto" selected>Auto (recommended)</option>
+              <option value="none">None</option>
+              <option value="bw">B/W (threshold)</option>
+              <option value="gray">Grayscale</option>
+            </select>
+          </label>
+        </div>
+        <div class="regionHelp">
+          <div class="hint">
+            שימוש: לחץ/י על <b>Add field</b> → גרור/י מלבן על התמונה → בחר/י איזה שדה זה.
+            אפשר לגרור להזיז, ולמשוך ידיות בפינות כדי לשנות גודל.
+          </div>
+        </div>
+        <div id="regionsList" class="regionsList"></div>
+        <p class="hint">
+          התבנית נשמרת מקומית בדפדפן (LocalStorage). אין העלאת מידע לשרת.
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>
+        Privacy: no upload. Everything runs locally in your browser.
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/tesseract.js@5.1.0/dist/tesseract.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

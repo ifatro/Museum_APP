@@ -1,0 +1,6 @@
+---
+pid: 22020
+cwd: |
+  C:\Users\rishum
+---
+PS C:\Users\rishum>
