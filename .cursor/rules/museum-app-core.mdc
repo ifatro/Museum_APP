@@ -1,0 +1,40 @@
+---
+description: Museum Card Scanner principles — fields, OCR, Hebrew
+alwaysApply: true
+---
+
+# Museum Card Scanner — principles
+
+## Registration number (`registration_number`)
+
+- Valid format only: **M + 2 Latin letters + space + 5 digits** (e.g. `MHP 72958`).
+- When ambiguous between `MEP` and `MHP` — **always prefer MHP** (same digit sequence).
+- Do not put other field values (receipt, old number) into registration number.
+- Logic: `canonicalRegistration`, `formatRegistrationNumberFromRaw` in `app.js`.
+
+## Hebrew — yod (י) vs lamed (ל)
+
+- In Hebrew OCR text: do **not** globally swap **yod** and **lamed** across whole words.
+- Conservative fix: `hebrew-ocr-lexicon.json` + `applyHebrewOcrLexicon` / `applyHebrewFieldCorrection` — never replace every `ל` in the text.
+- Known examples: `עלטור`→`עיטור`, `רומלת`→`רומית`, `קערלת`→`קערית`.
+
+## Do not include field labels
+
+- Field value = **content only**, without the card label (`מס' רשום:`, `חומר`, `תקופה`, `הערות`, etc.).
+- `stripKnownLabelPrefix`, `isLabelOnlyValue` — if only the label remains, the field is empty (`-` in the UI).
+
+## No frame artifacts from OCR
+
+- Do not leave `|`, `｜`, stray table-frame dots, or extra edge lines from the ROI.
+- Keep using `stripFrameArtifacts`, `stripRoiDividerArtifacts` in OCR processing.
+
+## Spacing
+
+- **Single** space between words; no runs of extra spaces.
+- Long text fields (notes, description): `normalizeLongText` preserves line breaks; short fields: `normalizeText`.
+
+## Architecture (brief)
+
+- Local OCR: Tesseract (`app.js`). Handwritten notes: optional Google Vision via `server/vision-proxy.mjs` — **notes ROI crop only**; API key in `.env`.
+- Source of truth for fields: `CARD_FORM_FIELDS` in `app.js`.
+- Minimal diffs; git commit only when explicitly requested.

@@ -1,0 +1,13 @@
+{
+  "name": "museum-card-scanner",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server/vision-proxy.mjs",
+    "test:lexicon": "node test-hebrew-lexicon.cjs"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}

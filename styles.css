@@ -8,6 +8,7 @@
   --accent:#6ea8fe;
   --accent2:#8a7dff;
   --danger:#ff6b6b;
+  --roi-yellow-stroke:rgba(255, 214, 10, 0.92);
 }
 
 *{box-sizing:border-box}
@@ -28,7 +29,269 @@ body{
 .header__title{font-size:18px;font-weight:700;letter-spacing:.2px}
 .header__subtitle{font-size:13px;color:var(--muted);margin-top:6px}
 
-.container{max-width:1100px;margin:0 auto;padding:18px 16px 36px}
+.container{max-width:1440px;margin:0 auto;padding:18px 16px 36px}
+
+/* תמונה משמאל, שדות מימין */
+.workbench{
+  direction:ltr;
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(300px, min(42vw, 560px));
+  gap:14px;
+  align-items:stretch;
+  margin-bottom:14px;
+}
+@media (max-width: 900px){
+  .workbench{grid-template-columns:1fr}
+}
+
+.card--preview{
+  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;
+  padding:14px;
+  direction:ltr;
+  text-align:left;
+}
+.row--previewTools{margin-top:10px}
+.row--notesCloud{
+  flex-wrap:wrap;
+  align-items:center;
+  gap:12px 20px;
+  margin-top:8px;
+}
+.label--checkbox{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  user-select:none;
+}
+.label--checkbox input{
+  width:1rem;
+  height:1rem;
+  accent-color:#ffd60a;
+}
+.notesOcrApiInput{
+  min-width:14rem;
+  padding:6px 10px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.18);
+  color:var(--text);
+  font-size:13px;
+}
+
+.panel--fieldsAside{
+  margin-bottom:0;
+  overflow:hidden;
+  max-height:none;
+  direction:rtl;
+  text-align:right;
+  display:flex;
+  flex-direction:column;
+  min-height:clamp(420px, 72vh, 820px);
+}
+.panel--fieldsAside #cardFieldsGrid{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  align-content:start;
+}
+.hint--tight{margin:0 0 8px;font-size:12px;line-height:1.4}
+
+.fieldPair{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  min-width:0;
+}
+.fieldStack{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+.fieldStack--dimsMetrics{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:6px 10px;
+  align-items:end;
+}
+.fieldStack--dimsMetrics .fieldPair{
+  gap:2px;
+}
+.fieldStack--dimsMetrics .cardFieldControl--single{
+  min-height:2.1rem;
+  padding:5px 8px;
+  font-size:13px;
+}
+.fieldStack--dimsMetrics label{
+  font-size:13px;
+}
+.fieldsGrid.fieldsGrid--aside > .fieldPair--location{
+  flex:1 1 100%;
+  max-width:100%;
+}
+.fieldsGrid.fieldsGrid--aside > .fieldPair--location .cardFieldControl--single{
+  min-height:2.1rem;
+  padding:5px 10px;
+  font-size:13px;
+}
+
+.fieldsGrid{
+  display:grid;
+  grid-template-columns:minmax(140px,220px) 1fr;
+  gap:10px 14px;
+  align-items:center;
+}
+.fieldsGrid.fieldsGrid--aside{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 12px;
+  align-items:stretch;
+  align-content:flex-start;
+}
+.fieldsGrid.fieldsGrid--aside > .fieldPair{
+  flex:1 1 calc(50% - 8px);
+  min-width:min(100%, 140px);
+  max-width:calc(50% - 8px);
+}
+.fieldsGrid.fieldsGrid--aside > .fieldStack,
+.fieldsGrid.fieldsGrid--aside > .fieldPair--notes{
+  flex:1 1 100%;
+  max-width:100%;
+}
+@media (max-width: 640px){
+  .fieldsGrid.fieldsGrid--aside > .fieldPair{
+    flex:1 1 100%;
+    max-width:100%;
+  }
+  .fieldStack--dimsMetrics{
+    grid-template-columns:1fr;
+  }
+}
+.fieldsGrid.fieldsGrid--aside > .fieldPair--object_location_museum .cardFieldControl--single{
+  min-height:2.1rem;
+  padding:5px 10px;
+  font-size:13px;
+}
+.fieldsGrid label{
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.35;
+}
+.cardFieldControl{
+  width:100%;
+  min-width:0;
+  padding:11px 13px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.18);
+  color:var(--text);
+  caret-color:var(--text);
+  font-size:14px;
+  line-height:1.45;
+  font-family:inherit;
+  direction:auto;
+  text-align:start;
+  unicode-bidi:plaintext;
+}
+.cardFieldControl--single{
+  min-height:2.5rem;
+  padding:8px 11px;
+  font-size:13.5px;
+}
+.cardFieldControl--textarea{
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.cardFieldControl--textarea-tall{
+  min-height:5.5rem;
+  max-height:7.5rem;
+  resize:vertical;
+  overflow-y:auto;
+  padding:8px 10px;
+  font-size:13px;
+  line-height:1.4;
+}
+.fieldStack--museumDesc{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  min-width:0;
+  flex:1 1 100%;
+  min-height:0;
+}
+.fieldStack--museumDesc .fieldPair--description{
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+.fieldPair--notes{
+  flex:1 1 100%;
+}
+.cardFieldControl--textarea-museumLoc{
+  min-height:2.35rem;
+  max-height:4.5rem;
+  resize:vertical;
+  overflow-y:auto;
+  padding:5px 10px;
+  font-size:13px;
+}
+.cardFieldControl--textarea-description{
+  flex:1 1 auto;
+  min-height:5.5rem;
+  max-height:9rem;
+  resize:vertical;
+  overflow-y:auto;
+  line-height:1.4;
+  padding:8px 10px;
+  font-size:13px;
+}
+.fieldStack--museumDesc .fieldPair--description .cardFieldControl--textarea-description{
+  width:100%;
+  min-height:5.5rem;
+  max-height:10rem;
+}
+.cardFieldControl--textarea-notes{
+  min-height:7rem;
+  max-height:11rem;
+  max-height:none;
+  resize:vertical;
+  overflow-y:auto;
+  padding:11px 13px;
+  font-size:14px;
+  line-height:1.5;
+}
+.cardFieldControl::placeholder{
+  color:rgba(255,255,255,.35);
+}
+.cardFieldControl.input--invalid{
+  border-color:rgba(255,107,107,.85);
+  box-shadow:0 0 0 1px rgba(255,107,107,.25);
+}
+.cardFieldControl:-webkit-autofill,
+.cardFieldControl:-webkit-autofill:hover,
+.cardFieldControl:-webkit-autofill:focus{
+  -webkit-text-fill-color:var(--text) !important;
+  box-shadow:0 0 0 1000px rgba(0,0,0,.22) inset !important;
+  transition:background-color 99999s ease-out 0s;
+}
+
+.panel--json textarea#output{
+  width:100%;
+  min-height:220px;
+  height:280px;
+  resize:vertical;
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.16);
+  color:var(--text);
+  font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size:12.5px;
+  line-height:1.35;
+}
 
 .panel{
   background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
@@ -108,18 +371,23 @@ select{
 
 .previewWrap{
   width:100%;
-  aspect-ratio: 4 / 3;
+  /* גובה מפורש — בלי זה height:100% על הצאצא מתאפס והקנבס לא נראה */
+  height:min(72vh, 820px);
+  min-height:420px;
+  max-height:82vh;
   background:rgba(0,0,0,.18);
   border:1px solid rgba(255,255,255,.10);
   border-radius:12px;
   overflow:hidden;
   display:flex;
-  align-items:center;
+  align-items:stretch;
   justify-content:center;
 }
 .canvasStack{
   position:relative;
+  flex:1;
   width:100%;
+  min-height:0;
   height:100%;
   display:flex;
   align-items:center;
@@ -137,20 +405,6 @@ select{
   cursor:crosshair;
 }
 
-textarea{
-  width:100%;
-  height:320px;
-  resize:vertical;
-  padding:10px 12px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.10);
-  background:rgba(0,0,0,.16);
-  color:var(--text);
-  font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size:12.5px;
-  line-height:1.35;
-}
-
 .footer{
   padding:16px;
   color:rgba(255,255,255,.55);
@@ -166,7 +420,7 @@ textarea{
 }
 .regionRow{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
   gap:10px;
   padding:10px 10px;
@@ -177,8 +431,15 @@ textarea{
 .regionRow__left{
   display:flex;
   flex-direction:column;
-  gap:4px;
+  gap:6px;
   min-width:0;
+  flex:1;
+}
+.regionRow__fieldSelect{
+  width:100%;
+  max-width:100%;
+  font-weight:700;
+  font-size:13px;
 }
 .regionRow__name{
   font-weight:700;
@@ -191,11 +452,22 @@ textarea{
   overflow:hidden;
   text-overflow:ellipsis;
 }
+.regionRow__actions{
+  display:flex;
+  flex-shrink:0;
+  flex-direction:column;
+  gap:6px;
+}
 .regionRow__btn{
   padding:8px 10px;
+  white-space:nowrap;
+}
+.regionRow__btn--danger{
+  border-color:rgba(255,120,120,.35);
+  color:#ffb4b4;
 }
 .regionRow--active{
-  outline:2px solid rgba(110,168,254,.55);
-  border-color: rgba(110,168,254,.35);
+  outline:2px solid rgba(255, 214, 10, 0.55);
+  border-color: rgba(255, 214, 10, 0.35);
 }
 .regionHelp b{color:var(--text)}

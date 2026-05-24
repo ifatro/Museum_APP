@@ -1,0 +1,20 @@
+---
+description: OCR and text cleanup — app.js and Hebrew lexicon
+globs: app.js,hebrew-ocr-lexicon.json,server/**
+alwaysApply: false
+---
+
+# OCR — implementing principles in code
+
+## Before changing code
+
+- Registration number: `finalizeOcrFieldValue` / `canonicalRegistration` — do not break `MXX #####` format.
+- Hebrew: extend via `hebrew-ocr-lexicon.json` (`words`, `replacements`), not a global regex over all Hebrew.
+- Labels: `stripKnownLabelPrefix` + `labelAliases` — add an alias when the card shows a new label.
+- Frame `|`, `.`: `stripRoiDividerArtifacts`, `stripFramePeriodArtifacts` — do not remove real decimal digits (dimensions).
+
+## Testing
+
+```bash
+npm run test:lexicon
+```

@@ -21,12 +21,12 @@
           <button id="resetBtn">Reset</button>
         </div>
         <p class="hint">
-          עובד מקומית בדפדפן. כדי לדייק חילוץ שדות, נגדיר בהמשך “אזורי שדות” לפי התבנית שלך.
+          באזור למטה: <b>התמונה משמאל</b>, <b>שדות הכרטיס מימין</b>. סמן/י מלבן צהוב סביב כל ערך — התבנית נשמרת אוטומטית. <b>Run OCR</b> ממלא את השדות.
         </p>
       </section>
 
-      <section class="grid">
-        <div class="card">
+      <section class="workbench" aria-label="תצוגה ושדות">
+        <div class="card card--preview">
           <h2>2) תצוגה מקדימה</h2>
           <div class="previewWrap">
             <div class="canvasStack">
@@ -34,7 +34,7 @@
               <canvas id="overlayCanvas"></canvas>
             </div>
           </div>
-          <div class="row">
+          <div class="row row--previewTools">
             <label class="label">
               Language
               <select id="langSelect">
@@ -61,14 +61,22 @@
           </div>
         </div>
 
-        <div class="card">
-          <h2>3) שדות שחולצו (JSON)</h2>
-          <div class="row">
-            <button id="downloadJsonBtn" disabled>Download JSON</button>
-            <button id="downloadCsvBtn" disabled>Download CSV</button>
-          </div>
-          <textarea id="output" spellcheck="false" placeholder="Output will appear here..."></textarea>
+        <aside class="panel panel--fields panel--fieldsAside">
+          <h2>שדות הכרטיס</h2>
+          <p class="hint hint--tight">
+            עריכה ידנית: עברית ואנגלית — ה-JSON מתעדכן אוטומטית. מס' רשום: <b>MXX #####</b> בלבד (למשל MHP 72958; MHP גובר על MEP). ערכים בלי תווית השדה, בלי קווי מסגרת <code>|</code>, רווח יחיד בין מילים. תיקון י׳/ל׳ עברית — מילון, לא החלפה גלובלית.
+          </p>
+          <div id="cardFieldsGrid" class="fieldsGrid fieldsGrid--aside"></div>
+        </aside>
+      </section>
+
+      <section class="panel panel--json">
+        <h2>3) פלט (JSON)</h2>
+        <div class="row">
+          <button id="downloadJsonBtn" disabled>Download JSON</button>
+          <button id="downloadCsvBtn" disabled>Download CSV</button>
         </div>
+        <textarea id="output" spellcheck="false" placeholder="Output will appear here..."></textarea>
       </section>
 
       <section class="panel">
@@ -89,28 +97,49 @@
             Preprocess
             <select id="preprocessSelect">
               <option value="auto" selected>Auto (recommended)</option>
+              <option value="contrast">Contrast (faded text)</option>
               <option value="none">None</option>
               <option value="bw">B/W (threshold)</option>
               <option value="gray">Grayscale</option>
             </select>
           </label>
         </div>
+        <div class="row row--notesCloud">
+          <label class="label label--checkbox">
+            <input id="notesCloudOcrCheckbox" type="checkbox" />
+            OCR הערות (Google Vision) — נשלח רק מלבן ההערות
+          </label>
+          <label class="label">
+            Notes API
+            <input
+              id="notesOcrApiInput"
+              type="url"
+              class="notesOcrApiInput"
+              value="http://localhost:3921"
+              spellcheck="false"
+              dir="ltr"
+            />
+          </label>
+        </div>
+        <p class="hint hint--tight">
+          כתב יד בהערות: סמנ/י את האפשרות, הריצו <code>npm start</code>, והגדירו מפתח ב-<code>.env</code> (ראו README). שאר השדות נשארים OCR מקומי.
+        </p>
         <div class="regionHelp">
           <div class="hint">
-            שימוש: לחץ/י על <b>Add field</b> → גרור/י מלבן על התמונה → בחר/י איזה שדה זה.
-            אפשר לגרור להזיז, ולמשוך ידיות בפינות כדי לשנות גודל.
+            שימוש: לחץ/י על <b>Add field</b> → גרור/י מלבן <b style="color:#ffd60a">צהוב</b> על התמונה → בחר/י איזה שדה זה (ברשימה או ב־Selected field).
+            בכל שורה: עדכון שדה ידני, <b>בחר</b>, <b>מחק</b>. אפשר לגרור להזיז ולשנות גודל בפינות.
           </div>
         </div>
         <div id="regionsList" class="regionsList"></div>
         <p class="hint">
-          התבנית נשמרת מקומית בדפדפן (LocalStorage). אין העלאת מידע לשרת.
+          התבנית נשמרת מקומית בדפדפן (LocalStorage). שאר השדות — OCR מקומי. עם «OCR הערות (Google)» — רק חיתוך מלבן ההערות נשלח לשרת ה-proxy המקומי, ומשם ל-Google Vision.
         </p>
       </section>
     </main>
 
     <footer class="footer">
       <div>
-        Privacy: no upload. Everything runs locally in your browser.
+        Privacy: שדות מודפסים — OCR מקומי בדפדפן. אופציונלי: מלבן «הערות» בלבד → proxy מקומי → Google Cloud Vision (מפתח ב-<code>.env</code>).
       </div>
     </footer>
 
